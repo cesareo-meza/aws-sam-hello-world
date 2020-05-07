@@ -12,7 +12,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://cesareo-examples/de978b0df6b84cf06e1b0a4aefba4101
+      CodeUri: s3://cesareo-examples/e0ac68c18d59373dea0075e59383fa0e
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Events:
@@ -20,6 +20,18 @@ Resources:
           Type: Api
           Properties:
             Path: /hello
+            Method: get
+  HaloWeltFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://cesareo-examples/93b1b644058a76cdaafc3c009dc5c49a
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Events:
+        HaloWelt:
+          Type: Api
+          Properties:
+            Path: /halo
             Method: get
 Outputs:
   HelloWorldApi:
@@ -37,4 +49,20 @@ Outputs:
     Value:
       Fn::GetAtt:
       - HelloWorldFunctionRole
+      - Arn
+  HaloWeltApi:
+    Description: API Gateway endpoint URL for Prod stage for Halo Welt function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/halo/
+  HaloWeltFunction:
+    Description: Halo Welt Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HaloWeltFunction
+      - Arn
+  HaloWeltFunctionIamRole:
+    Description: Implicit IAM Role created for HaloWelt function
+    Value:
+      Fn::GetAtt:
+      - HaloWeltFunctionRole
       - Arn
